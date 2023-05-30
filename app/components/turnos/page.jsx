@@ -77,7 +77,7 @@ export default function Calendary() {
 
       if (fechaFormateada.length) {
         axios
-          .get("http://localhost:3001/appointment")
+          .get("https://medconnectback-production.up.railway.app/appointment")
           .then((res) => {
             const diasHorasFiltradas = res.data.filter(
               (cita) =>

@@ -93,6 +93,7 @@ export default function Table() {
             {getCitasPerfil &&
               getCitasPerfil?.map((cita, index) => (
                 <Cita
+                  key={index}
                   handleCheckChange={handleCheckChange}
                   cita={cita}
                   index={index}
