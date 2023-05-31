@@ -33,7 +33,7 @@ export default function PerfilMedico() {
   useEffect(() => {
     if (!medicos.id) {
       axios
-        .get("http://localhost:3001/medics")
+        .get("https://medconnectback-production.up.railway.app/medics")
         .then((res) => {
           setMedicos(res.data);
         })
@@ -55,7 +55,7 @@ export default function PerfilMedico() {
 
     if (!horarios.id) {
       axios
-        .get("http://localhost:3001/schedule")
+        .get("https://medconnectback-production.up.railway.app/schedule")
         .then((res) => {
           setHorarios(res.data);
         })

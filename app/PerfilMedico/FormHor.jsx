@@ -12,7 +12,8 @@ import style from "./Forms.module.css";
 import FormItem from "antd/es/form/FormItem";
 import axios from "axios";
 const format = "HH:mm";
-const localHorario = "http://localhost:3001/schedule/create";
+const localHorario =
+  "https://medconnectback-production.up.railway.app/schedule/create";
 
 export default function FormHor({ filtromedico }) {
   const diasSemana = [

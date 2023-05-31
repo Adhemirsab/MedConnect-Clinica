@@ -15,7 +15,8 @@ import style from "./Forms.module.css";
 import FormItem from "antd/es/form/FormItem";
 import { useRef, useState } from "react";
 let index = 0;
-const localCal = "http://localhost:3001/medicoCalification";
+const localCal =
+  "https://medconnectback-production.up.railway.app/medicoCalification";
 
 export default function FormCal({ filtromedicos }) {
   const [items, setItems] = useState([]);

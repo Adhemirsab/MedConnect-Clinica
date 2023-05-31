@@ -7,8 +7,9 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { getSpeciality, getCities } from "../redux/reducer";
 import { Option } from "antd/es/mentions";
-const local = "http://localhost:3001/specializations";
-const localCites = "http://localhost:3001/cities";
+const local =
+  "https://medconnectback-production.up.railway.app/specializations";
+const localCites = "https://medconnectback-production.up.railway.app/cities";
 
 export default function Forms({ userLocal, medico }) {
   const [data, setData] = useState([]);
@@ -41,7 +42,7 @@ export default function Forms({ userLocal, medico }) {
   }, [especialidades, globalCities]);
 
   const valoresSubmit = async (values) => {
-    const localMedic = `http://localhost:3001/medics/${medico[0].id}`;
+    const localMedic = `https://medconnectback-production.up.railway.app/medics/${medico[0].id}`;
 
     const { first_name, last_name, ...a } = values;
 
