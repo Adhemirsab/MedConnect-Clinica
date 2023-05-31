@@ -111,7 +111,7 @@ export default function Navbar() {
         dispatch(getLocalUser(resObject.user));
       })
       .catch((err) => {});
-  }, []);
+  }, [logStatus]);
 
   console.log(userGoogle);
   console.log(userLocal);
