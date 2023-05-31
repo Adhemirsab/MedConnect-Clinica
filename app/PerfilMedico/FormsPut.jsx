@@ -9,14 +9,12 @@ import { getSpeciality, getCities } from "../redux/reducer";
 import { Option } from "antd/es/mentions";
 const local = "http://localhost:3001/specializations";
 const localCites = "http://localhost:3001/cities";
-const localMedic = "http://localhost:3001/medics/create";
 
-export default function Forms({ userLocal }) {
+export default function Forms({ userLocal, medico }) {
   const [data, setData] = useState([]);
   const [cities, setCities] = useState([]);
   const dispatch = useDispatch();
   const especialidades = useSelector((state) => state.speciality.AllSpecial);
-
   const globalCities = useSelector((state) => state.speciality.cities);
 
   const filtro = data.filter((e) => e.deletedAt === null);
@@ -43,11 +41,13 @@ export default function Forms({ userLocal }) {
   }, [especialidades, globalCities]);
 
   const valoresSubmit = async (values) => {
+    const localMedic = `http://localhost:3001/medics/${medico[0].id}`;
+
     const { first_name, last_name, ...a } = values;
 
-    const body = { ...a, userId: userLocal.id };
+    const body = { ...a };
 
-    const res = await axios.post(localMedic, body);
+    const res = await axios.put(localMedic, body);
   };
 
   return (
@@ -68,14 +68,9 @@ export default function Forms({ userLocal }) {
         <FormItem
           name="phone"
           label="Número de telefono"
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese su número de telefono",
-            },
-          ]}
+          initialValue={medico[0].phone}
         >
-          <Input type="number" name="phone" placeholder="Numero de telefono" />
+          <Input type="number" defaultValue={medico[0].phone} />
         </FormItem>
         <FormItem
           name="specializations"
@@ -123,11 +118,9 @@ export default function Forms({ userLocal }) {
         <Form.Item
           name="direccion"
           label="Direccion"
-          rules={[
-            { required: true, message: "Por favor ingrese su dirección" },
-          ]}
+          initialValue={medico[0].direccion}
         >
-          <Input type="string" name="direccion" placeholder="Direccion" />
+          <Input type="string" defaultValue={medico[0].direccion} />
           {/* {errors.user && (<span>{errors.user}</span>)} */}
         </Form.Item>
         <Button htmlType="submit" className={style.Button}>

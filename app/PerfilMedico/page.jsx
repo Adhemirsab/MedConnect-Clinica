@@ -10,6 +10,8 @@ import style from "./page.module.css";
 import Forms from "./Forms";
 import FormsHor from "./FormHor";
 import FormCal from "./FormCal";
+import FormsPut from "./FormsPut";
+import TableHorarios from "./TableHorarios";
 
 export default function PerfilMedico() {
   // const [user, setUser] = useState({});
@@ -17,10 +19,29 @@ export default function PerfilMedico() {
   const [clickAct, setClickAct] = useState(false);
   const [clickHor, setClickHor] = useState(false);
   const [clickCal, setClickCal] = useState(false);
+  const [medicos, setMedicos] = useState([]);
+  const [horarios, setHorarios] = useState([]);
 
   const userLocal = useSelector((state) => state.login.userLocal);
 
+  //en filtromedico traigo todo lo de un medico
+  const filtromedico = medicos.filter((e) => e.user.id === userLocal.id);
+  const filtroHorarios = horarios?.filter(
+    (e) => e.medico.phone === filtromedico[0]?.phone
+  );
+
   useEffect(() => {
+    if (!medicos.id) {
+      axios
+        .get("http://localhost:3001/medics")
+        .then((res) => {
+          setMedicos(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
     if (!citas.id) {
       axios
         .get("https://medconnectback-production.up.railway.app/appointment")
@@ -31,16 +52,22 @@ export default function PerfilMedico() {
           console.error(error);
         });
     }
-  }, []);
 
-  console.log("esto es citas", citas);
-  console.log("esto es userLocal", userLocal);
+    if (!horarios.id) {
+      axios
+        .get("http://localhost:3001/schedule")
+        .then((res) => {
+          setHorarios(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, []);
 
   const getCitasPerfil = citas.filter(
     (e) => e.user.first_name === userLocal?.first_name
   );
-
-  console.log(getCitasPerfil);
 
   const handleClick = () => {
     if (clickAct === true) {
@@ -144,41 +171,68 @@ export default function PerfilMedico() {
               >
                 Actualizar Info
               </a>
-              <a
-                onClick={() => {
-                  handleClickHor();
-                }}
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Horarios
-              </a>
-              <a
-                onClick={() => {
-                  handleClickCal();
-                }}
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Experencias
-              </a>
+              {filtromedico?.length ? (
+                <a
+                  onClick={() => {
+                    handleClickHor();
+                  }}
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Horarios
+                </a>
+              ) : (
+                <div></div>
+              )}
+              {filtromedico?.length ? (
+                <a
+                  onClick={() => {
+                    handleClickCal();
+                  }}
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Experencias
+                </a>
+              ) : (
+                <div></div>
+              )}
             </div>
+          </div>
+          <div>
+            {filtroHorarios.length ? (
+              <div>
+                <TableHorarios filtroHorarios={filtroHorarios} />
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
 
         <Table getCitasPerfil={getCitasPerfil}></Table>
       </div>
+
       <div>
-        {clickAct === true ? (
-          <Forms userLocal={userLocal}></Forms>
+        {filtromedico.length === 0 ? (
+          clickAct === true ? (
+            <Forms userLocal={userLocal}></Forms>
+          ) : (
+            <div></div>
+          )
+        ) : clickAct === true ? (
+          <FormsPut userLocal={userLocal} medico={filtromedico}></FormsPut>
         ) : (
           <div></div>
-        )}{" "}
+        )}
         {clickHor === true ? (
-          <FormsHor userLocal={userLocal}></FormsHor>
+          <FormsHor
+            userLocal={userLocal}
+            filtromedico={filtromedico}
+          ></FormsHor>
         ) : (
           <div></div>
-        )}{" "}
+        )}
         {clickCal === true ? (
-          <FormCal userLocal={userLocal}></FormCal>
+          <FormCal userLocal={userLocal} filtromedicos={filtromedico}></FormCal>
         ) : (
           <div></div>
         )}

@@ -26,6 +26,19 @@ export default function Table() {
   );
   console.log("get citas perfil: ", getCitasPerfil);
 
+  useEffect(() => {
+    if (!citas.id) {
+      axios
+        .get("http://localhost:3001/appointment")
+        .then((res) => {
+          setCitas(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, []);
+
   const handleCheckChange = async (
     citaId,
     scheduledDate,
@@ -33,14 +46,11 @@ export default function Table() {
     status
   ) => {
     await axios
-      .put(
-        `https://medconnectback-production.up.railway.app/appointment/${citaId}`,
-        {
-          scheduledDate: scheduledDate,
-          scheduledTime: scheduledTime,
-          status: status,
-        }
-      )
+      .put(`http://localhost:3001/appointment/${citaId}`, {
+        scheduledDate: scheduledDate,
+        scheduledTime: scheduledTime,
+        status: status,
+      })
       .then((response) => {
         console.log("Estado de la cita actualizado:", response.data);
       })
