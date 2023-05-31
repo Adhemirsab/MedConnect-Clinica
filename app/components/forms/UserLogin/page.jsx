@@ -30,6 +30,7 @@ export default function UserLogin() {
       )
       .then((res) => {
         if (res.data) {
+          console.log(res.data);
           dispatch(getLogStatus(res.data.data.user.role));
           dispatch(userChequer(res.data.data));
           router.push("/");
