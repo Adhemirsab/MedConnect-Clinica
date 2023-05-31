@@ -85,7 +85,7 @@ export default function Navbar() {
         throw new Error("authentication has been failed!");
       })
       .then((resObject) => {
-        console.log(resObject);
+        console.log("success google", resObject);
         dispatch(getUser(resObject.user));
       })
       .catch((err) => {});
@@ -107,7 +107,7 @@ export default function Navbar() {
         throw new Error("authentication has been failed!");
       })
       .then((resObject) => {
-        console.log(resObject);
+        console.log("success local", resObject);
         dispatch(getLocalUser(resObject.user));
       })
       .catch((err) => {});
