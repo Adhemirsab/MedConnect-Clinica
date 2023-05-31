@@ -111,6 +111,8 @@ export default function Navbar() {
       .catch((err) => {});
   }, [logStatus]);
 
+  console.log(userGoogle);
+  console.log(userLocal);
   const id = userLocal.id ? userLocal.id : userGoogle.id;
   const userPage =
     userLocal.role === "paciente" || userGoogle.id
